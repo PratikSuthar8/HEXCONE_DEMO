@@ -10,12 +10,26 @@
 		/>
 		<link rel="stylesheet" href="style.css" />
 		<script src="script.js" defer></script>
+		<script
+			type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 	</head>
+	<div id="toast" class="toast"></div>
+
 	<body>
 		<!-- Navbar -->
 		<header class="header">
 			<nav class="navbar">
-				<div class="logo">HEXCONE</div>
+				<div class="logo">
+					<img
+						src="./Img/Logo.png"
+						alt=""
+						srcset=""
+						class="logo-img"
+					/>
+				</div>
 				<div class="hamburger">
 					<span></span>
 					<span></span>
@@ -25,7 +39,7 @@
 					<li><a href="#home">Home</a></li>
 					<li><a href="#about">About</a></li>
 					<li><a href="#services">Services</a></li>
-					<li><a href="#projects">Projects</a></li>
+					<!-- <li><a href="#projects">Projects</a></li> -->
 					<li><a href="#contact">Contact</a></li>
 				</ul>
 			</nav>
@@ -34,10 +48,10 @@
 		<!-- Hero Section -->
 		<section id="home" class="hero">
 			<div class="hero-content">
-				<h1>Building Your Vision, Managing Your Success</h1>
+				<h1>Engineering Tomorrow’s Landmarks, Today</h1>
 				<p>
-					Professional Project Management & Construction Supervision
-					for excellence in every structure.
+					From concept to completion - HEXCONE delivers construction
+					excellence, project innovation, and trust that stands tall.
 				</p>
 				<a href="#contact" class="btn">Get Consultation</a>
 			</div>
@@ -52,24 +66,33 @@
 				<div class="about-content">
 					<h2>About Us</h2>
 					<p>
-						BuildPro PMC is a leading construction project
-						management firm delivering high-quality infrastructure
-						with precision, efficiency, and integrity. We manage
-						your projects from concept to completion, ensuring
-						timely delivery and cost efficiency.
+						HEXCONE delivers innovative, sustainable, and
+						high-quality construction solutions across sectors. From
+						PMC and LGSI to PEB, Ferrocement, and Hybrid Systems, we
+						build exceptional spaces with engineering precision,
+						aesthetic excellence, and lasting integrity.
 					</p>
 					<ul>
 						<li>
-							<i class="fa-solid fa-check"></i> End-to-End Project
-							Management
+							<i class="fa-solid fa-check"></i> Strategic Project
+							Planning
 						</li>
 						<li>
-							<i class="fa-solid fa-check"></i> Quality & Cost
-							Control
+							<i class="fa-solid fa-check"></i> Efficient
+							Execution Control
 						</li>
 						<li>
-							<i class="fa-solid fa-check"></i> Client
-							Transparency
+							<i class="fa-solid fa-check"></i> Quality Assurance
+							Excellence
+						</li>
+
+						<li>
+							<i class="fa-solid fa-check"></i> Timely Budget
+							Delivery
+						</li>
+						<li>
+							<i class="fa-solid fa-check"></i> Seamless Client
+							Coordination
 						</li>
 					</ul>
 					<a href="#contact" class="btn">Get Consultation</a>
@@ -84,33 +107,41 @@
 				<div class="service-list">
 					<div class="service-item">
 						<i class="fa-solid fa-helmet-safety"></i>
-						<h3>Project Management</h3>
+						<h3>Residential Construction</h3>
 						<p>
-							We plan, execute, and monitor every phase of your
-							construction project with precision.
+							Building homes with precision, durability, and
+							aesthetic appeal.
 						</p>
 					</div>
 					<div class="service-item">
 						<i class="fa-solid fa-building"></i>
-						<h3>Construction Supervision</h3>
+						<h3>Commercial Construction</h3>
 						<p>
-							On-site quality checks, progress tracking, and
-							compliance assurance for flawless delivery.
+							Creating functional and modern office, retail, and
+							mixed-use spaces.
 						</p>
 					</div>
 					<div class="service-item">
 						<i class="fa-solid fa-ruler-combined"></i>
-						<h3>Cost & Quality Control</h3>
+						<h3>Industrial Construction</h3>
 						<p>
-							Advanced monitoring systems for budget optimization
-							and material quality.
+							Delivering robust and efficient structures for
+							factories, warehouses, and plants.
+						</p>
+					</div>
+					<div class="service-item">
+						<i class="fa-solid fa-ruler-combined"></i>
+						<h3>Hospitality & Leisure</h3>
+						<p>
+							Designing hotels, resorts, and recreational spaces
+							with elegance and quality.
 						</p>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Projects Section -->
+		<!-- Projects Section
 		<section id="projects" class="projects section">
 			<div class="container">
 				<h2>Recent Projects</h2>
@@ -138,7 +169,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 		<!-- Contact Section -->
 		<section id="contact" class="contact section">
@@ -155,6 +186,7 @@
 								<i class="fa-solid fa-user"></i>
 								<input
 									type="text"
+									name="your_name"
 									placeholder="Your Name"
 									required
 								/>
@@ -163,6 +195,7 @@
 								<i class="fa-solid fa-envelope"></i>
 								<input
 									type="email"
+									name="your_email"
 									placeholder="Your Email"
 									required
 								/>
@@ -170,13 +203,19 @@
 						</div>
 						<div class="form-group">
 							<i class="fa-solid fa-pen"></i>
-							<input type="text" placeholder="Subject" required />
+							<input
+								type="text"
+								name="subject"
+								placeholder="Subject"
+								required
+							/>
 						</div>
 						<div class="form-group textarea-group">
 							<div class="icon-wrapper ta-wrapper">
 								<i class="fa-solid fa-message"></i>
 							</div>
 							<textarea
+								name="message"
 								placeholder="Your Message"
 								required
 							></textarea>
@@ -185,12 +224,13 @@
 							<i class="fa-solid fa-paper-plane"></i> Send Message
 						</button>
 					</form>
+
 					<div class="contact-details">
 						<h3>Get in Touch</h3>
 						<p><i class="fa-solid fa-phone"></i> +91 98765 43210</p>
 						<p>
 							<i class="fa-solid fa-envelope"></i>
-							info@buildpropmc.com
+							hexconeinfra@gmaill.com
 						</p>
 						<p>
 							<i class="fa-solid fa-location-dot"></i> Mumbai,
