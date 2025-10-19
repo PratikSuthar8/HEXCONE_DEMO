@@ -1,590 +1,97 @@
-:root {
-	--primary: #003366;
-	--light: #f4f7fb;
-	--dark: #111;
-	--text: #555;
+// ====== Navbar Hamburger Toggle ======
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+if (hamburger && navLinks) {
+	hamburger.addEventListener("click", () => {
+		hamburger.classList.toggle("active");
+		navLinks.classList.toggle("active");
+	});
 }
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	scroll-behavior: smooth;
-	font-family: "Poppins", sans-serif;
-}
+// ====== Smooth Scroll for Nav Links ======
+document.querySelectorAll('.nav-links a[href^="#"]').forEach((link) => {
+	link.addEventListener("click", function (e) {
+		e.preventDefault();
+		const target = document.querySelector(this.getAttribute("href"));
+		if (target) {
+			target.scrollIntoView({ behavior: "smooth" });
+			navLinks.classList.remove("active");
+			hamburger.classList.remove("active");
+		}
+	});
+});
 
-body {
-	color: var(--text);
-	background: var(--light);
-}
+// ====== Scroll Animations ======
+const revealElements = document.querySelectorAll(
+	".section, .service-item, .project-item"
+);
 
-/* Navbar */
-.header {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	background: #fff;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-	z-index: 1000;
-}
+const revealOnScroll = () => {
+	const triggerBottom = window.innerHeight * 0.85;
+	revealElements.forEach((el) => {
+		const boxTop = el.getBoundingClientRect().top;
+		if (boxTop < triggerBottom) {
+			el.classList.add("show");
+		}
+	});
+};
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();
 
-.navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1rem 5%;
-}
-.logo-img {
-	width: 130px;
-}
-.nav-links {
-	display: flex;
-	list-style: none;
-	gap: 2rem;
-}
-
-.nav-links a {
-	text-decoration: none;
-	color: var(--dark);
-	font-weight: 500;
-	transition: 0.3s;
-}
-
-.nav-links a:hover {
-	color: var(--primary);
-}
-
-/* Hamburger */
-.hamburger {
-	display: none;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 28px;
-	height: 20px;
-	cursor: pointer;
-	z-index: 1100;
-}
-
-.hamburger span {
-	display: block;
-	height: 3px;
-	width: 100%;
-	background: var(--primary);
-	border-radius: 2px;
-	transition: all 0.3s ease;
-}
-
-.hamburger.active span:nth-child(1) {
-	transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
-	opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-	transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* Mobile Nav Dropdown */
-@media (max-width: 900px) {
-	.hamburger {
-		display: flex;
+// ====== Toast helper ======
+function createToastIfMissing() {
+	let t = document.getElementById("toast");
+	if (!t) {
+		t = document.createElement("div");
+		t.id = "toast";
+		t.className = "toast";
+		document.body.appendChild(t);
 	}
+	return t;
+}
+const toast = createToastIfMissing();
 
-	.nav-links {
-		flex-direction: column;
-		position: absolute;
-		top: 70px;
-		right: 5%;
-		background: #fff;
-		width: 200px;
-		padding: 1rem 1.5rem;
-		border-radius: 10px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-		opacity: 0;
-		pointer-events: none;
-		transform: translateY(-10px);
-		transition: all 0.3s ease;
-		z-index: 1000;
+function showToast(message, type = "success") {
+	toast.textContent = message;
+	toast.className = `toast show ${type}`;
+	clearTimeout(showToast._timeout);
+	showToast._timeout = setTimeout(() => {
+		toast.classList.remove("show");
+	}, 3000);
+}
+
+// ====== EmailJS integration (sendForm) ======
+(function () {
+	// initialize EmailJS with your public key
+	if (typeof emailjs !== "undefined" && emailjs.init) {
+		emailjs.init("2_da1t6wSjuDoCc7w");
+	} else {
+		console.warn(
+			"EmailJS library not loaded. Make sure you added the EmailJS script in <head>."
+		);
 	}
+})();
 
-	.nav-links.active {
-		opacity: 1;
-		pointer-events: auto;
-		transform: translateY(0);
-	}
+const contactForm = document.querySelector(".contact-form");
 
-	.nav-links li {
-		margin: 1rem 0;
-	}
+if (contactForm) {
+	contactForm.addEventListener("submit", (e) => {
+		e.preventDefault();
 
-	.nav-links a {
-		display: block;
-		color: var(--dark);
-	}
-
-	.nav-links a:hover {
-		color: var(--primary);
-	}
-}
-
-/* Hero Section */
-.hero {
-	height: 100vh;
-	background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c")
-		center/cover no-repeat;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 0 10%;
-	color: #fff;
-	position: relative;
-}
-
-.hero::after {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 51, 102, 0.6);
-}
-
-.hero-content {
-	position: relative;
-	z-index: 1;
-	max-width: 700px;
-}
-
-.hero h1 {
-	font-size: 2.5rem;
-	margin-bottom: 1rem;
-}
-
-.hero p {
-	font-size: 1.1rem;
-	margin-bottom: 1.5rem;
-}
-
-.btn {
-	text-decoration: none;
-	background: var(--primary);
-	color: #fff;
-	padding: 0.8rem 1.6rem;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: 0.3s;
-}
-
-.btn:hover {
-	background: #002244;
-}
-
-/* Sections */
-.section {
-	padding: 6rem 5% 4rem;
-}
-
-/* About Section - Split Layout */
-.about {
-	background: var(--light);
-}
-
-.about-container {
-	display: flex;
-	flex-wrap: wrap;
-	border-radius: 12px;
-	overflow: hidden;
-	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-/* Left Image */
-.about-img {
-	flex: 1 1 45%;
-	min-width: 300px;
-	overflow: hidden;
-}
-
-.about-img img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: transform 0.3s ease;
-}
-
-.about-img img:hover {
-	transform: scale(1.05);
-}
-
-/* Right Content */
-.about-content {
-	flex: 1 1 55%;
-	background: var(--primary);
-	color: #fff;
-	padding: 3rem 2rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-
-.about-content h2 {
-	font-size: 2rem;
-	margin-bottom: 1rem;
-}
-
-.about-content p {
-	font-size: 1rem;
-	line-height: 1.6;
-	margin-bottom: 2rem;
-	color: #e0e0e0;
-}
-
-.about-content ul {
-	list-style: none;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-bottom: 2rem;
-}
-
-.about-content li {
-	display: flex;
-	align-items: center;
-	gap: 0.7rem;
-	font-weight: 500;
-}
-
-.about-content li i {
-	background: #fff;
-	color: var(--primary);
-	padding: 0.4rem;
-	border-radius: 50%;
-	font-size: 0.9rem;
-	flex-shrink: 0;
-}
-
-.about-content .btn {
-	align-self: flex-start;
-	background: #fff;
-	color: var(--primary);
-}
-
-.about-content .btn:hover {
-	background: #e0e0e0;
-	color: var(--primary);
-}
-
-/* Services Section */
-.services .service-list {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 2rem;
-	margin-top: 2rem;
-}
-
-.service-item {
-	background: #fff;
-	padding: 2rem;
-	border-radius: 10px;
-	text-align: center;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.service-item i {
-	font-size: 2rem;
-	color: var(--primary);
-	margin-bottom: 1rem;
-}
-
-/* Projects Section */
-.project-gallery {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 1.5rem;
-	margin-top: 2rem;
-}
-
-.project-item {
-	text-align: center;
-}
-
-.project-item img {
-	width: 100%;
-	height: 200px;
-	object-fit: cover;
-	border-radius: 10px;
-	margin-bottom: 0.5rem;
-}
-
-/* Contact Section */
-.contact h2 {
-	text-align: center;
-	font-size: 2rem;
-	color: var(--primary);
-}
-
-.contact-subtext {
-	text-align: center;
-	margin: 0.5rem 0 3rem;
-	font-size: 1rem;
-	color: var(--text);
-}
-
-.contact-wrapper {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	flex-wrap: wrap;
-	gap: 2rem;
-}
-
-/* Contact Form */
-.contact-form {
-	flex: 1 1 60%;
-	background: #fff;
-	padding: 2.5rem;
-	border-radius: 12px;
-	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-	border-top: 4px solid var(--primary);
-}
-
-.form-row {
-	display: flex;
-	gap: 1rem;
-	flex-wrap: wrap;
-}
-
-.form-group {
-	position: relative;
-	flex: 1;
-	margin-bottom: 1.5rem;
-}
-
-.form-group i {
-	position: absolute;
-	top: 50%;
-	left: 15px;
-	transform: translateY(-50%);
-	color: var(--primary);
-	font-size: 1rem;
-}
-
-.contact-form input {
-	width: 100%;
-	padding: 0.9rem 1rem 0.9rem 2.5rem;
-	border: 1px solid #ccc;
-	border-radius: 6px;
-	outline: none;
-	transition: 0.3s;
-	font-size: 1rem;
-}
-
-.contact-form input:focus {
-	border-color: var(--primary);
-	box-shadow: 0 0 4px rgba(0, 51, 102, 0.2);
-}
-
-.textarea-group {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	align-items: center;
-	background: #fff;
-	border: 1px solid #ccc;
-	border-radius: 6px;
-	padding: 0.8rem 1rem;
-	gap: 10px;
-}
-
-.icon-wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-}
-.ta-wrapper {
-	position: relative;
-	left: -13px;
-}
-.icon-wrapper i {
-	color: var(--primary);
-	font-size: 1.1rem;
-	position: relative;
-	top: -1px; /* fine-tune for pixel alignment */
-}
-
-.textarea-group textarea {
-	width: 100%;
-	border: none;
-	outline: none;
-	resize: none;
-	font-size: 1rem;
-	line-height: 1.6;
-	background: transparent;
-	padding-top: 4px; /* aligns placeholder perfectly */
-}
-
-.contact-btn {
-	background: var(--primary);
-	color: #fff;
-	border: none;
-	padding: 0.9rem 1.8rem;
-	border-radius: 6px;
-	font-size: 1rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s ease;
-}
-
-.contact-btn:hover {
-	background: #002244;
-	transform: translateY(-2px);
-}
-
-/* Contact Details */
-.contact-details {
-	flex: 1 1 35%;
-	background: #fff;
-	border-radius: 12px;
-	padding: 2.5rem;
-	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-	border-top: 4px solid var(--primary);
-}
-
-.contact-details h3 {
-	margin-bottom: 1.5rem;
-	color: var(--primary);
-}
-
-.contact-details p {
-	margin: 0.8rem 0;
-	font-size: 1rem;
-	display: flex;
-	align-items: center;
-	gap: 0.7rem;
-	color: var(--text);
-}
-
-.contact-details i {
-	color: var(--primary);
-	font-size: 1.1rem;
-}
-
-.social-icons {
-	margin-top: 1.5rem;
-}
-
-.social-icons a {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background: #fff;
-	color: var(--primary);
-	font-size: 1.1rem;
-	margin-right: 0.7rem;
-	transition: 0.3s;
-	text-decoration: none;
-	border: 1px solid var(--primary);
-}
-
-.social-icons a:hover {
-	background: var(--primary);
-	color: #fff;
-	transform: translateY(-2px);
-}
-
-/* Footer */
-.footer {
-	text-align: center;
-	background: var(--primary);
-	color: #fff;
-	padding: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-	.about-container,
-	.contact-wrapper {
-		flex-direction: column;
-	}
-	.about-content {
-		padding: 2rem 1.5rem;
-	}
-	.form-row {
-		flex-direction: column;
-	}
-	.contact-wrapper {
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.contact-form,
-	.contact-details {
-		width: 60%;
-		max-width: 600px;
-	}
-
-	.contact-form {
-		margin-bottom: 2rem;
-	}
-}
-@media (max-width: 450px) {
-	.contact-form,
-	.contact-details {
-		width: 90%;
-	}
-}
-/* ====== Scroll Animation ====== */
-.section,
-.service-item,
-.project-item,
-.contact {
-	opacity: 0;
-	transform: translateY(100px);
-	transition: all 1s linear;
-}
-
-.section.show,
-.service-item.show,
-.project-item.show,
-.contact.show {
-	opacity: 1;
-	transform: translateY(0);
-}
-/* Toast Notification */
-.toast {
-	position: fixed;
-	bottom: 30px;
-	right: 30px;
-	background: var(--primary);
-	color: #fff;
-	padding: 1rem 1.5rem;
-	border-radius: 8px;
-	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-	font-weight: 500;
-	font-size: 1rem;
-	opacity: 0;
-	transform: translateY(20px);
-	transition: all 0.4s ease;
-	z-index: 2000;
-}
-
-.toast.show {
-	opacity: 1;
-	transform: translateY(0);
-}
-
-.toast.success {
-	background: #28a745; /* Green */
-}
-
-.toast.error {
-	background: #dc3545; /* Red */
+		// Use sendForm so EmailJS maps form field names to template variables automatically.
+		emailjs
+			.sendForm("service_m9rwad9", "template_1ynemwi", contactForm)
+			.then(() => {
+				showToast("✅ Message sent successfully!", "success");
+				contactForm.reset();
+			})
+			.catch((error) => {
+				console.error("EmailJS error:", error);
+				showToast(
+					"❌ Failed to send message. Try again later.",
+					"error"
+				);
+			});
+	});
 }
