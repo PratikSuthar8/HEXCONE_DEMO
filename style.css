@@ -9,6 +9,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	scroll-behavior: smooth;
 	font-family: "Poppins", sans-serif;
 }
 
@@ -33,13 +34,9 @@ body {
 	align-items: center;
 	padding: 1rem 5%;
 }
-
-.logo {
-	font-size: 1.5rem;
-	color: var(--primary);
-	font-weight: bold;
+.logo-img {
+	width: 130px;
 }
-
 .nav-links {
 	display: flex;
 	list-style: none;
@@ -543,4 +540,51 @@ body {
 	.contact-details {
 		width: 90%;
 	}
+}
+/* ====== Scroll Animation ====== */
+.section,
+.service-item,
+.project-item,
+.contact {
+	opacity: 0;
+	transform: translateY(100px);
+	transition: all 1s linear;
+}
+
+.section.show,
+.service-item.show,
+.project-item.show,
+.contact.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+/* Toast Notification */
+.toast {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	background: var(--primary);
+	color: #fff;
+	padding: 1rem 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	font-weight: 500;
+	font-size: 1rem;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: all 0.4s ease;
+	z-index: 2000;
+}
+
+.toast.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.toast.success {
+	background: #28a745; /* Green */
+}
+
+.toast.error {
+	background: #dc3545; /* Red */
 }
